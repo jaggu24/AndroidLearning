@@ -1,9 +1,11 @@
 package android.bignerdranch.kotlincriminalintent
 
 import android.bignerdranch.kotlincriminalintent.database.CrimeDatabase
+import android.bignerdranch.kotlincriminalintent.database.migration_1_2
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -12,9 +14,11 @@ class CrimeRepository constructor(context: Context) {
 
     private val database: CrimeDatabase = Room.databaseBuilder(context.applicationContext,
         CrimeDatabase::class.java,
-        DATABASE_NAME).build()
+        DATABASE_NAME).addMigrations(migration_1_2).build()
+    
     private val crimeDao=database.crimeDao()
     private val executor = Executors.newSingleThreadExecutor()
+    private val filesDir = context.applicationContext.filesDir
 
     fun updateCrime(crime: Crime){
         executor.execute {
@@ -26,6 +30,7 @@ class CrimeRepository constructor(context: Context) {
             crimeDao.addCrime(crime)
         }
     }
+    fun getPhotoFile(crime:Crime) : File = File(filesDir,crime.photoFileName)
     fun getCrimes(): LiveData<List<Crime>> = crimeDao.getCrimes()
     fun getCrime(id: UUID): LiveData<Crime?> = crimeDao.getCrime(id)
     companion object {

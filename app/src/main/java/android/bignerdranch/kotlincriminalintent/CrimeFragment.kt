@@ -126,23 +126,18 @@ class CrimeFragment: Fragment(), FragmentResultListener {
     override fun onStart() {
         super.onStart()
         val titleWatcher = object : TextWatcher{
-            /*
-            This is a function belonging to TextWatcher which doesn't need implementation as of now
-             */
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
             /*
             This is a function belonging to TextWatcher which doesn't need implementation as of now
              */
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 crime.title=s.toString()
             }
+            override fun afterTextChanged(s: Editable?) {
             /*
             This is a function belonging to TextWatcher which doesn't need implementation as of now
              */
-            override fun afterTextChanged(s: Editable?) {
-
             }
         }
         titleField.addTextChangedListener(titleWatcher)
@@ -167,7 +162,7 @@ class CrimeFragment: Fragment(), FragmentResultListener {
             }
         }
         suspectButton.apply {
-            
+
             setOnClickListener {
                 pickContactLauncher.launch(ContactsContract.Contacts.CONTENT_URI)
             }
